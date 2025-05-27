@@ -1,11 +1,19 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LogoutView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
 
 from .forms import CommentForm
 from .models import Comment, News
+
+
+class CustomLogoutView(LogoutView):
+    http_method_names = ["get", "post", "options"]
+
+    def get(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
 
 class NewsList(generic.ListView):
